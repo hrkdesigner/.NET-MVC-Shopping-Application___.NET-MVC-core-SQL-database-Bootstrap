@@ -1,0 +1,111 @@
+﻿@using shop.Models.DataAccess;
+
+@model IEnumerable<shop.Models.DataAccess.Product>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container py-3">
+  <main>
+       <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <p class="  text-success">@TempData["ResultMessage"]</p>
+      <h3 class="display-4 fw-normal">Here is info about your current memberships!</h3>
+      <p class="fs-5 text-muted">Cancel and resubscribe anytime!</p>
+    </div>
+           @if(TempData["ResultMessage"]!=null)
+        {
+           <script>
+                Swal.fire(
+  '@ViewBag.suscc',
+  'You can enjoy our service now!',
+  'success'
+)
+            </script> 
+        } 
+        
+        @{
+
+            var _cntx = new dbfinalContext();
+            var sub = _cntx.CustomerHasProducts.FirstOrDefault(m => m.CustomerId == Context.Session.GetInt32("auth"));
+            var customerVar = _cntx.Customers.FirstOrDefault(m => m.Id == Context.Session.GetInt32("auth"));
+
+        }
+         <div class="alert alert-primary" role="alert">
+
+          <h3> Welcome, @customerVar.Name </h3>
+  Your current E-mail : @customerVar.Email  <br>
+  Your current ID : @customerVar.Id  <br>
+ 
+</div>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+          @foreach (var item in Model) {
+              @if(sub!=null)
+                {
+                   @if(item.Id !=sub.ProductId)
+                {
+                  <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">@Html.DisplayFor(modelItem => item.Name)</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$@Html.DisplayFor(modelItem => item.Price)<small class="text-muted fw-light">/mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>@Html.DisplayFor(modelItem => item.Describtion)</li>
+              <li>Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <button disabled  class="w-100 btn btn-lg btn-outline-primary" asp-action="Subs" asp-route-id="@item.Id">Subscribe</button>
+          </div>
+        </div>
+      </div>  
+                }
+                          @if(item.Id ==sub.ProductId)
+                {
+                  <div class="col">
+         <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="my-0 fw-normal">@Html.DisplayFor(modelItem => item.Name)</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$@Html.DisplayFor(modelItem => item.Price)<small class="text-muted fw-light">/mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>@Html.DisplayFor(modelItem => item.Describtion)</li>
+              <li>Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <a  class="w-100 btn btn-lg btn-primary" asp-action="Cancel" asp-route-id="@sub.CustomerId">Cancel</a>
+          </div>
+        </div>
+      </div>  
+                } 
+                }
+                @if(sub==null)
+                {
+                     <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">@Html.DisplayFor(modelItem => item.Name)</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">$@Html.DisplayFor(modelItem => item.Price)<small class="text-muted fw-light">/mo</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>@Html.DisplayFor(modelItem => item.Describtion)</li>
+              <li>Email support</li>
+              <li>Help center access</li>
+            </ul>
+            <a  class="w-100 btn btn-lg btn-outline-primary" asp-action="Subs" asp-route-id="@item.Id">Subscribe</a>
+          </div>
+        </div>
+      </div>  
+
+                }
+
+
+
+
+            }
+    </div>
+  </main></div>

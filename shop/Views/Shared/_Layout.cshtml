@@ -1,0 +1,79 @@
+﻿@using Microsoft.AspNetCore.Mvc.RazorPages;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - shop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/shop.styles.css" asp-append-version="true" />
+    <meta name="theme-color" content="#7952b3">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @@media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="pricing.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-3">
+  <header>
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <span class="fs-4">A&H Hosting</span>
+      </a>
+
+      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 text-dark text-decoration-none" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        @if(Context.Session.GetInt32("auth")!=null || Context.Session.GetInt32("authAdmin")!=null)
+                    {
+                    <a class="me-3 py-2 text-dark text-decoration-none" asp-area="" asp-controller="Customers" asp-action="Logout">Logout</a>
+                    }
+                    @if(Context.Session.GetInt32("auth")==null && Context.Session.GetInt32("authAdmin")==null)
+                    {
+                    <a class="me-3 py-2 text-dark text-decoration-none" asp-area="" asp-controller="Customers" asp-action="Create">Sign Up</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" asp-area="" asp-controller="Customers" asp-action="Login">Log In</a>
+
+                    }
+      </nav>
+    </div>
+
+   
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - shop - <a asp-area="" asp-controller="Products" asp-action="adminLogin">Admin</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
